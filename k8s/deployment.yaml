@@ -1,0 +1,20 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: powerplatform-app
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: powerplatform-app
+  template:
+    metadata:
+      labels:
+        app: powerplatform-app
+    spec:
+      containers:
+        - name: powerplatform-app
+          image: powerplatform-app:v1
+          ports:
+            - containerPort: 5000
+          imagePullPolicy: Never
