@@ -14,19 +14,13 @@ pipeline {
             }
         }
 
-         stage('SonarQube Scan') {
-             steps {
-                 withCredentials([string(credentialsId: 'sonar-token', variable: 'SONAR_TOKEN')]) {
-                     sh '''
-                     sonar-scanner \
-                     -Dsonar.projectKey=powerplatform \
-                     -Dsonar.sources=app \
-                     -Dsonar.host.url=http://powerplatform-sonarqube:9000 \
-                     -Dsonar.token=$SONAR_TOKEN
-                     '''
+        stage('Sonar Scan') {
+            steps {
+                withCredentials([string(credentialsId: 'sonar-token', variable: 'SONAR_TOKEN')]) {
+                    sh 'sonar-scanner -Dsonar.projectKey=powerplatform -Dsonar.sources=app -Dsonar.host.url=http://172.17.0.1:9000 -Dsonar.token=$SONAR_TOKEN'
+                }
+            }
         }
-    }
-}
 
         stage('Docker Build') {
             steps {
