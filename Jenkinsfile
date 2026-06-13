@@ -14,6 +14,20 @@ pipeline {
             }
         }
 
+         stage('SonarQube Scan') {
+             steps {
+                 withCredentials([string(credentialsId: 'sonar-token', variable: 'SONAR_TOKEN')]) {
+                     sh '''
+                     sonar-scanner \
+                     -Dsonar.projectKey=powerplatform \
+                     -Dsonar.sources=app \
+                     -Dsonar.host.url=http://powerplatform-sonarqube:9000 \
+                     -Dsonar.token=$SONAR_TOKEN
+                     '''
+        }
+    }
+}
+
         stage('Docker Build') {
             steps {
                 sh 'docker build -t powerplatform-app:v1 ./app'
